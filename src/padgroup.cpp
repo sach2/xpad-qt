@@ -11,6 +11,11 @@ void PadGroup::CreateNewPad()
     pads.push_back(pad);
 }
 
+const list<Pad*>& PadGroup::GetPads()
+{
+    return pads;
+}
+
 PadGroup::~PadGroup()
 {
     for(auto pad : pads)

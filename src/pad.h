@@ -7,13 +7,15 @@
 class Pad : public QObject
 {
     Q_OBJECT
-    PadWindow mainwindow;
+    PadWindow padwindow;
     QString windowBuffer;
 public:
     Pad();
     ~Pad();
 public slots:
-    void dataReceived(QString data) ;
+    void dataReceived(QString data);
+    PadWindow& GetWindow();
+    void show();
 
 };
 

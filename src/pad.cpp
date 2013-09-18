@@ -3,14 +3,24 @@
 #include<iostream>
 Pad::Pad()
 {
-    mainwindow.SetPad(this);
-    mainwindow.show();
+    padwindow.SetPad(this);
+    padwindow.show();
 }
 
 void Pad::dataReceived(QString data)
 {
     windowBuffer = data;
 //    qDebug()<<data;
+}
+
+PadWindow& Pad::GetWindow()
+{
+    return padwindow;
+}
+
+void Pad::show()
+{
+    padwindow.show();
 }
 
 Pad::~Pad()

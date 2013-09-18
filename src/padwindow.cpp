@@ -24,7 +24,9 @@ void PadWindow::SetPad(Pad * p)
 {
     pad = p;
 }
-void PadWindow::closeEvent(QCloseEvent *)
+void PadWindow::closeEvent(QCloseEvent *e)
 {
     pad->dataReceived(ui->textEdit->toPlainText());
+    e->ignore();
+    hide();
 }

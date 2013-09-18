@@ -15,12 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
     pad.cpp \
     padgroup.cpp \
-    padwindow.cpp
+    padwindow.cpp \
+    app.cpp
 
 HEADERS  += \
     pad.h \
     padgroup.h \
-    padwindow.h
+    padwindow.h \
+    app.h
 
 FORMS    += \
     padwindow.ui

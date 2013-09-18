@@ -6,12 +6,15 @@
 
 class Pad;
 
+using namespace std;
+
 class PadGroup : public QObject
 {
     Q_OBJECT
-    std::list<Pad*> pads;
+    list<Pad*> pads;
 public:
     PadGroup();
+    const list<Pad*>& GetPads();
     ~PadGroup();
 public slots:
     void CreateNewPad();
