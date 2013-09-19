@@ -6,34 +6,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>324</width>
-    <height>264</height>
+    <width>316</width>
+    <height>254</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Pad Window</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>281</width>
-      <height>171</height>
+      <x>0</x>
+      <y>0</y>
+      <width>331</width>
+      <height>261</height>
      </rect>
     </property>
    </widget>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
