@@ -24,6 +24,11 @@ void PadWindow::SetPad(Pad * p)
 {
     pad = p;
 }
+void PadWindow::SetText(QString text)
+{
+    ui->textEdit->setText(text);
+}
+
 void PadWindow::closeEvent(QCloseEvent *e)
 {
     pad->dataReceived(ui->textEdit->toPlainText());

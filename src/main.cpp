@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     App app;
+    app.LoadPads();
     app.CreateTrayMenu();
 
     //wait untill quit message is posted

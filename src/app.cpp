@@ -7,13 +7,16 @@
 
 App::App():trayIcon(new QSystemTrayIcon), padGroup(new PadGroup())
 {
-    // create tray icon
-    trayIcon->setIcon(QIcon("/home/sachin/icon.png"));
+    iconPath = "/home/sachin/.xpad-qt/xpad.png";
+    padDirectory = "/home/sachin/.xpad-qt/pads";
+
+    // init tray icon
+    trayIcon->setIcon(QIcon(iconPath));
     trayIcon->setVisible(true);
     trayIcon->show();
 
-    // test - create pad to avoid going to tray every time just to create
-    padGroup->CreateNewPad();
+    // init pad group
+    padGroup->SetDirectory(padDirectory);
 }
 
 void App::CreateTrayMenu()
@@ -26,9 +29,10 @@ void App::CreateTrayMenu()
     trayIconMenu->addAction(new_pad_action);
 
     // add menu items for all pads
+    int counter = 0;
     for(auto pad : padGroup->GetPads())
     {
-        auto padaction = new QAction("Pad", NULL);
+        auto padaction = new QAction(QString("&%1").arg(counter++), NULL);
         trayIcon->connect(padaction, &QAction::triggered, pad, &Pad::show);
         trayIconMenu->addAction(padaction);
     }
@@ -36,17 +40,25 @@ void App::CreateTrayMenu()
     // quit menu
     auto quitAction = new QAction("&Quit", NULL);
     trayIcon->connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-    //todo - not working, should work
+    //todo - not working, should work according to new syntax
     //trayIcon->connect(quitAction, SIGNAL(triggered()), qApp, &QApplication::quit);
     trayIconMenu->addAction(quitAction);
 
     trayIcon->setContextMenu(trayIconMenu);
 }
 
+// new pad action slot
 void App::newPadRequested()
 {
     padGroup->CreateNewPad();
+    // recreate tray menu - can we optimize?
     CreateTrayMenu();
+}
+
+// load saved pads
+void App::LoadPads()
+{
+    padGroup->LoadPads();
 }
 
 void App::HideTray()

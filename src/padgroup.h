@@ -3,6 +3,7 @@
 
 #include<list>
 #include<QObject>
+#include <map>
 
 class Pad;
 
@@ -12,9 +13,15 @@ class PadGroup : public QObject
 {
     Q_OBJECT
     list<Pad*> pads;
+    map<Pad*, QString> padToFilenameMap;
+    int newPadIndex;
+    QString directory;
+    Pad* newPadWithInfo(QString filename);
 public:
     PadGroup();
     const list<Pad*>& GetPads();
+    void SetDirectory(QString dir);
+    void LoadPads();
     ~PadGroup();
 public slots:
     void CreateNewPad();

@@ -15,6 +15,7 @@ public:
     explicit PadWindow(QWidget *parent = 0);
     ~PadWindow();
     void SetPad(Pad*);
+    void SetText(QString text);
 public:
     void closeEvent(QCloseEvent *);
 private:
