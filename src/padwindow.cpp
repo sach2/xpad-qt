@@ -29,6 +29,11 @@ void PadWindow::SetText(QString text)
     ui->textEdit->setText(text);
 }
 
+QString PadWindow::GetText()
+{
+    return ui->textEdit->toPlainText();
+}
+
 void PadWindow::closeEvent(QCloseEvent *e)
 {
     pad->dataReceived(ui->textEdit->toPlainText());

@@ -16,6 +16,7 @@ public:
     ~PadWindow();
     void SetPad(Pad*);
     void SetText(QString text);
+    QString GetText();
 public:
     void closeEvent(QCloseEvent *);
 private:

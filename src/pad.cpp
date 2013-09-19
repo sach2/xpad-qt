@@ -53,6 +53,13 @@ void Pad::saveToFile()
 //    file << windowBuffer;
 //    file.close();
 
+    auto current_buffer = padwindow.GetText();
+    if (current_buffer == windowBuffer)
+    {
+        return;
+    }
+    windowBuffer = current_buffer;
+
     QFile file(filename);
     if (file.open(QIODevice::WriteOnly))
     {

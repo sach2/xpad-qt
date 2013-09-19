@@ -12,9 +12,7 @@ PadGroup::PadGroup()
 void PadGroup::CreateNewPad()
 {
     auto filename = QString("%1/%2").arg(directory).arg(newPadIndex);
-
     newPadWithInfo(filename);
-
     ++newPadIndex;
 }
 
@@ -56,8 +54,5 @@ void PadGroup::LoadPads()
 
 PadGroup::~PadGroup()
 {
-    for(auto pad : pads)
-    {
-        delete pad;
-    }
+    for_each(pads.begin(), pads.end(), [](Pad*p){delete p;});
 }

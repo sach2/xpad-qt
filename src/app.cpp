@@ -2,10 +2,14 @@
 #include <QAction>
 #include <QMenu>
 #include <QApplication>
+#include <algorithm>
+#include <functional>
 
 #include <pad.h>
 
-App::App():trayIcon(new QSystemTrayIcon), padGroup(new PadGroup())
+App::App():
+    trayIcon(new QSystemTrayIcon),
+    padGroup(new PadGroup())
 {
     iconPath = "/home/sachin/.xpad-qt/xpad.png";
     padDirectory = "/home/sachin/.xpad-qt/pads";
@@ -19,13 +23,23 @@ App::App():trayIcon(new QSystemTrayIcon), padGroup(new PadGroup())
     padGroup->SetDirectory(padDirectory);
 }
 
+void App::SavePadsThread()
+{
+    while (true)
+    {
+        for_each(padGroup->GetPads().begin(), padGroup->GetPads().end(),
+                 bind(&Pad::saveToFile, placeholders::_1));
+        this_thread::sleep_for(chrono::seconds(5));
+    }
+}
+
 void App::CreateTrayMenu()
 {
     auto trayIconMenu = new QMenu();
 
     // new pad action
     auto new_pad_action = new QAction("&New Pad", NULL);
-    QObject::connect(new_pad_action, &QAction::triggered, this, &App::newPadRequested);
+    connect(new_pad_action, &QAction::triggered, this, &App::newPadRequested);
     trayIconMenu->addAction(new_pad_action);
 
     // add menu items for all pads
@@ -33,13 +47,14 @@ void App::CreateTrayMenu()
     for(auto pad : padGroup->GetPads())
     {
         auto padaction = new QAction(QString("&%1").arg(counter++), NULL);
-        trayIcon->connect(padaction, &QAction::triggered, pad, &Pad::show);
+        //        trayIcon->connect(padaction, &QAction::triggered, pad, &Pad::show);
+        connect(padaction, &QAction::triggered, pad, &Pad::show);
         trayIconMenu->addAction(padaction);
     }
 
     // quit menu
     auto quitAction = new QAction("&Quit", NULL);
-    trayIcon->connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     //todo - not working, should work according to new syntax
     //trayIcon->connect(quitAction, SIGNAL(triggered()), qApp, &QApplication::quit);
     trayIconMenu->addAction(quitAction);
@@ -59,10 +74,12 @@ void App::newPadRequested()
 void App::LoadPads()
 {
     padGroup->LoadPads();
+    padSaverThread = std::thread(&App::SavePadsThread, this);
 }
 
 void App::HideTray()
 {
     trayIcon->hide();
+    padSaverThread.detach();
 }
 
