@@ -16,13 +16,18 @@ SOURCES += main.cpp\
     pad.cpp \
     padgroup.cpp \
     padwindow.cpp \
-    app.cpp
+    app.cpp \
+    propertieswindow.cpp \
+    properties.cpp
 
 HEADERS  += \
     pad.h \
     padgroup.h \
     padwindow.h \
-    app.h
+    app.h \
+    propertieswindow.h \
+    properties.h
 
 FORMS    += \
-    padwindow.ui
+    padwindow.ui \
+    propertieswindow.ui

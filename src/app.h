@@ -2,10 +2,8 @@
 #define APP_H
 
 #include <QSystemTrayIcon>
-
 #include <memory>
 #include <thread>
-
 #include "padgroup.h"
 
 using namespace std;
@@ -18,8 +16,9 @@ class App : public QObject
     unique_ptr<PadGroup> padGroup;
     QString iconPath;
     QString padDirectory;
-    void SavePadsThread();
     std::thread padSaverThread;
+private:
+    void SavePadsThread();
 public:
     App();
     void CreateTrayMenu();

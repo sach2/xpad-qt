@@ -2,10 +2,17 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <propertieswindow.h>
+#include <properties.h>
+
+#include <memory>
+
 class Pad;
 namespace Ui {
 class PadWindow;
 }
+
+using namespace std;
 
 class PadWindow : public QMainWindow
 {
@@ -17,11 +24,18 @@ public:
     void SetPad(Pad*);
     void SetText(QString text);
     QString GetText();
-public:
+public slots:
     void closeEvent(QCloseEvent *);
+    void onPropertiesButtonPressed();
 private:
     Pad*pad;
+    Properties properties;
+    unique_ptr<PropertiesWindow> propertiesWindow;
     Ui::PadWindow *ui;
+
+private:
+    void SyncWithProperties();
+
 };
 
 #endif // MAINWINDOW_H
