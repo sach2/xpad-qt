@@ -12,6 +12,7 @@ public:
     void saveProperties(const Properties& properties) const;
     QString loadContents() const;
     void saveContents(QString contents) const;
+    void deletePad();
 };
 
 #endif // PADSERIALIZER_H

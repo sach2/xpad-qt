@@ -24,6 +24,12 @@ void Pad::show()
     padwindow.show();
 }
 
+void Pad::deletePad()
+{
+    padwindow.hide();
+    serializer.deletePad();
+}
+
 void Pad::loadFromFile()
 {
     padwindow.properties = serializer.loadProperties();

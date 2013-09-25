@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <propertieswindow.h>
 #include <properties.h>
-
+#include <QList>
 #include <memory>
 
 class Pad;
@@ -27,13 +27,17 @@ public:
     Properties properties;
 public slots:
     void closeEvent(QCloseEvent *);
-    void onPropertiesButtonPressed();
+    void propertiesWindowRequested();
+    void showContextMenu(const QPoint& pos);
 private:
     Pad*pad;
+    QList<QAction*> actions;
     unique_ptr<PropertiesWindow> propertiesWindow;
     Ui::PadWindow *ui;
 
+
 private:
+    void initContextMenu();
 public:
     void SyncWithProperties();
 

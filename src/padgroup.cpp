@@ -16,12 +16,23 @@ void PadGroup::CreateNewPad()
     qsrand((uint)current_time.msec());
     auto filename = QString("%1/info-%2").arg(directory).arg(qrand() % 1000);
     newPadWithInfo(filename);
+    emit numberOfPadsChanged();
+}
+void PadGroup::deletePad(Pad* pad)
+{
+    pad->deletePad();
+    pads.remove(pad);
+    delete pad;
+    emit numberOfPadsChanged();
 }
 
 Pad* PadGroup::newPadWithInfo(QString filename)
 {
     auto pad = new Pad(PadSerializer(filename));
-    padToFilenameMap[pad] = filename;
+    connect(pad, &Pad::newPadRequested, this, &PadGroup::CreateNewPad);
+    connect(pad, &Pad::deletePadRequested, [&](Pad* pad){
+        deletePad(pad);
+    });
     pads.push_back(pad);
     return pad;
 }

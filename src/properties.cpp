@@ -2,8 +2,8 @@
 
 Properties::Properties()
 {
-    textColor = QColor::fromRgb(10, 10, 10);
-    backColor = QColor::fromRgb(230, 230, 230);
+    textColor = QColor::fromRgb(0, 85, 0);
+    backColor = QColor::fromRgb(240, 240, 119);
 }
 
 bool Properties::operator ==(const Properties& rhs)

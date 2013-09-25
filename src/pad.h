@@ -16,12 +16,16 @@ class Pad : public QObject
 public:
     Pad(PadSerializer padSerializer);
     ~Pad();
+signals:
+    void newPadRequested();
+    void deletePadRequested(Pad* pad);
 public slots:
     void dataReceived(QString data);
 public:
     void show();
     void loadFromFile();
     void saveToFile();
+    void deletePad();
 };
 
 #endif // PAD_H

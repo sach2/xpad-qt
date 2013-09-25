@@ -7,6 +7,7 @@
 #include<QFileInfo>
 #include<QTime>
 #include<QDir>
+#include<QDebug>
 using namespace std;
 
 PadSerializer::PadSerializer(QString infoFile)
@@ -129,4 +130,12 @@ void PadSerializer::saveContents(QString contents) const
         QTextStream out(&file);
         out << contents << endl;
     }
+}
+
+void PadSerializer::deletePad()
+{
+    if (QFile(infoFilename).exists())
+        QFile(infoFilename).remove();
+    if (QFile(contentFilename).exists())
+        QFile(contentFilename).remove();
 }

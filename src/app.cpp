@@ -21,6 +21,8 @@ App::App():
 
     // init pad group
     padGroup->SetDirectory(padDirectory);
+    connect(padGroup.get(), &PadGroup::numberOfPadsChanged,
+            this, &App::CreateTrayMenu);
 }
 
 void App::SavePadsThread()

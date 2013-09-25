@@ -4,9 +4,9 @@
 
 #include<QDebug>
 #include<QCloseEvent>
-
+#include<QMenu>
 #include<string>
-
+#include<istream>
 #include<pad.h>
 
 PadWindow::PadWindow(QWidget *parent) :
@@ -15,8 +15,44 @@ PadWindow::PadWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     SyncWithProperties();
-    connect(ui->propertiesButton, &QPushButton::pressed,
-            this, &PadWindow::onPropertiesButtonPressed);
+    initContextMenu();
+}
+
+void PadWindow::initContextMenu()
+{
+    QAction* newPadAction = new QAction("&New pad", this);
+    connect(newPadAction, &QAction::triggered, [&](){
+        emit pad->newPadRequested();
+    });
+    QAction* propertiesAction = new QAction("&Properties", this);
+    connect(propertiesAction, &QAction::triggered, [&](){
+        propertiesWindowRequested();;
+    });
+    QAction* closeAction = new QAction("&Close", this);
+    connect(closeAction, &QAction::triggered, [&](){
+        hide();
+    });
+    QAction* deletePadAction = new QAction("&Delete pad", this);
+    connect(deletePadAction, &QAction::triggered,[&](){
+        emit pad->deletePadRequested(pad);
+    });
+    actions.push_back(newPadAction);
+    actions.push_back(propertiesAction);
+    actions.push_back(closeAction);
+    actions.push_back(deletePadAction);
+
+    ui->textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->textEdit, &QWidget::customContextMenuRequested,
+            this, &PadWindow::showContextMenu);
+
+}
+
+void PadWindow::showContextMenu(const QPoint &pos)
+{
+    QPoint globalPos = ui->textEdit->mapToGlobal(pos);
+    QMenu padMenu;
+    padMenu.addActions(actions);
+    padMenu.exec(globalPos);
 }
 
 PadWindow::~PadWindow()
@@ -24,7 +60,7 @@ PadWindow::~PadWindow()
     delete ui;
 }
 
-void PadWindow::onPropertiesButtonPressed()
+void PadWindow::propertiesWindowRequested()
 {
     if (!propertiesWindow)
     {
