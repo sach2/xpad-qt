@@ -54,18 +54,18 @@ Properties PadSerializer::loadProperties() const
     QColor& backColor(properties.backColor);
     QColor& textColor(properties.textColor);
     // register handlers for keys found in config file
-    map<QString, function<void(QString)>> elmap;
-    elmap["backcolor.red"] = [&](const QString& value)
+    map<QString, function<void(QString)>> keyToHandlerMap;
+    keyToHandlerMap["backcolor.red"] = [&](const QString& value)
             {backColor.setRed(value.toInt());};
-    elmap["backcolor.green"] = [&](const QString& value)
+    keyToHandlerMap["backcolor.green"] = [&](const QString& value)
             {backColor.setGreen(value.toInt());};
-    elmap["backcolor.blue"] = [&](const QString& value)
+    keyToHandlerMap["backcolor.blue"] = [&](const QString& value)
             {backColor.setBlue(value.toInt());};
-    elmap["textcolor.red"] = [&](const QString& value)
+    keyToHandlerMap["textcolor.red"] = [&](const QString& value)
             {textColor.setRed(value.toInt());};
-    elmap["textcolor.green"] = [&](const QString& value)
+    keyToHandlerMap["textcolor.green"] = [&](const QString& value)
             {textColor.setGreen(value.toInt());};
-    elmap["textcolor.blue"] = [&](const QString& value)
+    keyToHandlerMap["textcolor.blue"] = [&](const QString& value)
             {textColor.setBlue(value.toInt());};
 
     // read config file and call registered handlers
@@ -78,8 +78,8 @@ Properties PadSerializer::loadProperties() const
             QString line = in.readLine();
             if (line == "")
                 continue;
-            auto iter = elmap.find(line.split("=")[0]);
-            if (iter != elmap.end())
+            auto iter = keyToHandlerMap.find(line.split("=")[0]);
+            if (iter != keyToHandlerMap.end())
             {
                 auto handler = (*iter).second;
                 handler(line.split("=")[1]);
