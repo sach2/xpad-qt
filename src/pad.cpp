@@ -5,7 +5,8 @@
 #include <string>
 #include <QFile>
 
-Pad::Pad()
+Pad::Pad(PadSerializer padSerializer)
+    :serializer(padSerializer)
 {
     padwindow.SetPad(this);
     padwindow.show();
@@ -23,49 +24,25 @@ void Pad::show()
     padwindow.show();
 }
 
-void Pad::setFilename(QString file)
-{
-    filename = file;
-}
-
 void Pad::loadFromFile()
 {
-    QFile file(filename);
-    file.open(QIODevice::ReadOnly);
-    QTextStream in(&file);
-    QString contents;
-    while(!in.atEnd())
-    {
-        QString line = in.readLine();
-        contents.append(line);
-        contents.append('\n');
-    }
-    windowBuffer = contents;
-    padwindow.SetText(windowBuffer);
+    padwindow.properties = serializer.loadProperties();
+    padwindow.SetText(serializer.loadContents());
+    padwindow.SyncWithProperties();
 }
 
 void Pad::saveToFile()
 {
-    // wofstream doesn't work in qt
-//    wstring f;
-//    wofstream file;
-//    file.open(f.c_str()); // error
-//    file << windowBuffer;
-//    file.close();
-
     auto current_buffer = padwindow.GetText();
-    if (current_buffer == windowBuffer)
+    bool sameBuffer = current_buffer == windowBuffer;
+    bool sameProperties = serializer.loadProperties() == padwindow.properties;
+    if (sameBuffer && sameProperties)
     {
         return;
     }
     windowBuffer = current_buffer;
-
-    QFile file(filename);
-    if (file.open(QIODevice::WriteOnly))
-    {
-        QTextStream stream(&file);
-        stream << windowBuffer << endl;
-    }
+    serializer.saveProperties(padwindow.properties);
+    serializer.saveContents(windowBuffer);
 }
 
 Pad::~Pad()

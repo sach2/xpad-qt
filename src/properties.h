@@ -10,6 +10,7 @@ public:
     QColor backColor;
 public:
     Properties();
+    bool operator==(const Properties& rhs);
 };
 
 #endif // PROPERTIES_H

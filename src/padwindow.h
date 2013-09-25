@@ -24,16 +24,17 @@ public:
     void SetPad(Pad*);
     void SetText(QString text);
     QString GetText();
+    Properties properties;
 public slots:
     void closeEvent(QCloseEvent *);
     void onPropertiesButtonPressed();
 private:
     Pad*pad;
-    Properties properties;
     unique_ptr<PropertiesWindow> propertiesWindow;
     Ui::PadWindow *ui;
 
 private:
+public:
     void SyncWithProperties();
 
 };

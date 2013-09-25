@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     padwindow.cpp \
     app.cpp \
     propertieswindow.cpp \
-    properties.cpp
+    properties.cpp \
+    padserializer.cpp
 
 HEADERS  += \
     pad.h \
@@ -26,7 +27,8 @@ HEADERS  += \
     padwindow.h \
     app.h \
     propertieswindow.h \
-    properties.h
+    properties.h \
+    padserializer.h
 
 FORMS    += \
     padwindow.ui \

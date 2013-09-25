@@ -3,23 +3,24 @@
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
+#include <padserializer.h>
+#include <QTime>
 
 PadGroup::PadGroup()
 {
-    newPadIndex = 0;
 }
 
 void PadGroup::CreateNewPad()
 {
-    auto filename = QString("%1/%2").arg(directory).arg(newPadIndex);
+    QTime current_time = QTime::currentTime();
+    qsrand((uint)current_time.msec());
+    auto filename = QString("%1/info-%2").arg(directory).arg(qrand() % 1000);
     newPadWithInfo(filename);
-    ++newPadIndex;
 }
 
 Pad* PadGroup::newPadWithInfo(QString filename)
 {
-    auto pad = new Pad();
-    pad->setFilename(filename);
+    auto pad = new Pad(PadSerializer(filename));
     padToFilenameMap[pad] = filename;
     pads.push_back(pad);
     return pad;
@@ -38,18 +39,16 @@ const list<Pad*>& PadGroup::GetPads()
 void PadGroup::LoadPads()
 {
     QDir dir(directory);
+    QStringList filters;
+    filters << "info-*";
+    dir.setNameFilters(filters);
     dir.setFilter(QDir::Files);
     for (auto file : dir.entryInfoList())
     {
         auto absFilepath = file.absoluteFilePath();
-        // update new pad index
-        auto fileno = file.fileName().toInt();
-        if (fileno > newPadIndex)
-            newPadIndex = fileno;
         auto pad = newPadWithInfo(absFilepath);
         pad->loadFromFile();
     }
-    ++newPadIndex;
 }
 
 PadGroup::~PadGroup()
