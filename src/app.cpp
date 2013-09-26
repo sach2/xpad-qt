@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <algorithm>
 #include <functional>
+#include <QDir>
 
 #include <pad.h>
 
@@ -11,8 +12,19 @@ App::App():
     trayIcon(new QSystemTrayIcon),
     padGroup(new PadGroup())
 {
-    iconPath = "/home/sachin/.xpad-qt/xpad.png";
-    padDirectory = "/home/sachin/.xpad-qt/pads";
+    QString xpadHomeDir = QDir::homePath() + "/.xpad-qt";
+    if (! QDir(xpadHomeDir).exists())
+    {
+        QDir::home().mkdir(xpadHomeDir);
+    }
+    // todo: refer icon from installed location
+    iconPath = xpadHomeDir + "/xpad.png";
+
+    padDirectory = xpadHomeDir + "/pads";
+    if (! QDir(padDirectory).exists())
+    {
+        QDir::home().mkdir(padDirectory);
+    }
 
     // init tray icon
     trayIcon->setIcon(QIcon(iconPath));
