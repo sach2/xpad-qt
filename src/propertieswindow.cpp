@@ -30,6 +30,7 @@ PropertiesWindow::PropertiesWindow(Properties prop, QWidget *parent) :
                 emit rejected();
             }
     );
+    ui->backColorButton->setShortcut(QKeySequence::New);
 }
 
 void PropertiesWindow::onTextColorButtonPressed()

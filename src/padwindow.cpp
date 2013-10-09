@@ -21,18 +21,23 @@ PadWindow::PadWindow(QWidget *parent) :
 void PadWindow::initContextMenu()
 {
     QAction* newPadAction = new QAction("&New pad", this);
+    newPadAction->setShortcutContext(Qt::ApplicationShortcut);
+    newPadAction->setShortcut(QKeySequence::New);
     connect(newPadAction, &QAction::triggered, [&](){
         emit pad->newPadRequested();
     });
-    QAction* propertiesAction = new QAction("&Properties", this);
+    QAction* propertiesAction = new QAction("&Properties", ui->textEdit);
+    propertiesAction->setShortcut(QKeySequence("Ctrl+,"));
     connect(propertiesAction, &QAction::triggered, [&](){
         propertiesWindowRequested();;
     });
-    QAction* closeAction = new QAction("&Close", this);
+    QAction* closeAction = new QAction("&Close", ui->textEdit);
+    closeAction->setShortcut(QKeySequence::Close);
     connect(closeAction, &QAction::triggered, [&](){
         hide();
     });
-    QAction* deletePadAction = new QAction("&Delete pad", this);
+    QAction* deletePadAction = new QAction("&Delete pad", ui->textEdit);
+    deletePadAction->setShortcut(QKeySequence("Shift+Del"));
     connect(deletePadAction, &QAction::triggered,[&](){
         emit pad->deletePadRequested(pad);
     });
@@ -40,6 +45,7 @@ void PadWindow::initContextMenu()
     actions.push_back(propertiesAction);
     actions.push_back(closeAction);
     actions.push_back(deletePadAction);
+    padMenu.addActions(actions);
 
     ui->textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->textEdit, &QWidget::customContextMenuRequested,

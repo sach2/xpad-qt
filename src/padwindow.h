@@ -6,6 +6,7 @@
 #include <properties.h>
 #include <QList>
 #include <memory>
+#include <QMenu>
 
 class Pad;
 namespace Ui {
@@ -19,12 +20,13 @@ class PadWindow : public QMainWindow
     Q_OBJECT
     
 public:
+    Properties properties;
     explicit PadWindow(QWidget *parent = 0);
     ~PadWindow();
     void SetPad(Pad*);
     void SetText(QString text);
     QString GetText();
-    Properties properties;
+    void SyncWithProperties();
 public slots:
     void closeEvent(QCloseEvent *);
     void propertiesWindowRequested();
@@ -35,12 +37,8 @@ private:
     unique_ptr<PropertiesWindow> propertiesWindow;
     Ui::PadWindow *ui;
 
-
-private:
     void initContextMenu();
-public:
-    void SyncWithProperties();
-
+    QMenu padMenu;
 };
 
 #endif // MAINWINDOW_H
