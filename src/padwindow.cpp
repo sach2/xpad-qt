@@ -45,7 +45,7 @@ void PadWindow::initContextMenu()
     ui->textEdit->addAction(closeAction);
 
     auto deletePadAction = new QAction("&Delete pad", ui->textEdit);
-    deletePadAction->setShortcut(QKeySequence("Shift+Del"));
+    deletePadAction->setShortcut(QKeySequence("Ctrl+Del"));
     connect(deletePadAction, &QAction::triggered,[&](){
         emit pad->deletePadRequested(pad);
     });
