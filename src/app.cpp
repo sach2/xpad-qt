@@ -49,6 +49,7 @@ void App::SavePadsThread()
 
 void App::CreateTrayMenu()
 {
+    delete trayIcon->contextMenu();
     auto trayIconMenu = new QMenu();
 
     // new pad action
