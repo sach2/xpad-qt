@@ -61,7 +61,9 @@ void App::CreateTrayMenu()
     int counter = 0;
     for(auto pad : padGroup->GetPads())
     {
-        auto padaction = new QAction(QString("&%1").arg(counter++), NULL);
+        auto padaction = new QAction(
+                    QString("&%1. %2").arg(++counter).arg(pad->getTitle()),
+                    NULL);
         //        trayIcon->connect(padaction, &QAction::triggered, pad, &Pad::show);
         connect(padaction, &QAction::triggered, pad, &Pad::show);
         trayIconMenu->addAction(padaction);

@@ -11,7 +11,7 @@ class Pad : public QObject
 {
     Q_OBJECT
     PadWindow padwindow;
-    QString windowBuffer;
+    QString windowBuffer, title;
     PadSerializer serializer;
 public:
     Pad(PadSerializer padSerializer);
@@ -20,6 +20,7 @@ public:
     void loadFromFile();
     void saveToFile();
     void deletePad();
+    QString getTitle();
 signals:
     void newPadRequested();
     void deletePadRequested(Pad* pad);

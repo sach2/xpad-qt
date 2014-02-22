@@ -37,6 +37,13 @@ void Pad::loadFromFile()
     padwindow.SyncWithProperties();
 }
 
+QString Pad::getTitle()
+{
+    QString current_buffer = padwindow.GetText();
+    QStringList list = current_buffer.split('\n', QString::SkipEmptyParts);
+    return (list.size() > 0) ? list[0] : "";
+}
+
 void Pad::saveToFile()
 {
     auto current_buffer = padwindow.GetText();
