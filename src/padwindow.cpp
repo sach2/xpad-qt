@@ -138,6 +138,7 @@ void PadWindow::SyncWithProperties()
     QString styleSheetString = "QTextEdit {" + textColorString + backColorString + "}";
     ui->textEdit->setStyleSheet(styleSheetString);
     ui->textEdit->setText(ui->textEdit->toPlainText());
+    ui->textEdit->setReadOnly(properties.readonly);
 }
 
 void PadWindow::SetPad(Pad * p)

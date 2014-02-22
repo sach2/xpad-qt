@@ -18,6 +18,8 @@ public:
     explicit PropertiesWindow(Properties prop, QWidget *parent = 0);
     ~PropertiesWindow();
     Properties GetProperties();
+    void Initialize();
+    void AddSlots();
 private:
     Ui::PropertiesWindow *ui;
     Properties properties, confirmedProperties;

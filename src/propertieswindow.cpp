@@ -10,7 +10,18 @@ PropertiesWindow::PropertiesWindow(Properties prop, QWidget *parent) :
     confirmedProperties(prop)
 {
     ui->setupUi(this);
+    Initialize();
+    AddSlots();
+}
+
+void PropertiesWindow::Initialize()
+{
+    ui->readonlyCheckBox->setChecked(properties.readonly);
     DrawPreview();
+}
+
+void PropertiesWindow::AddSlots()
+{
     connect(ui->textColorButton, &QPushButton::pressed,
             this, &PropertiesWindow::onTextColorButtonPressed);
     connect(ui->backColorButton, &QPushButton::pressed,
@@ -28,6 +39,12 @@ PropertiesWindow::PropertiesWindow(Properties prop, QWidget *parent) :
             {
                 hide();
                 emit rejected();
+            }
+    );
+    connect(ui->readonlyCheckBox, &QCheckBox::stateChanged,
+            [&](int state)
+            {
+                confirmedProperties.readonly = (state == Qt::CheckState::Checked);
             }
     );
 }
