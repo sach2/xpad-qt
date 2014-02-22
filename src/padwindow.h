@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <propertieswindow.h>
+#include <preferenceswindow.h>
 #include <properties.h>
 #include <QList>
 #include <memory>
@@ -30,11 +31,13 @@ public:
 public slots:
     void closeEvent(QCloseEvent *);
     void propertiesWindowRequested();
+    void preferencesWindowRequested();
     void showContextMenu(const QPoint& pos);
 private:
     Pad*pad;
     QList<QAction*> actions;
     unique_ptr<PropertiesWindow> propertiesWindow;
+    unique_ptr<PreferencesWindow> preferencesWindow;
     Ui::PadWindow *ui;
 
     void initContextMenu();

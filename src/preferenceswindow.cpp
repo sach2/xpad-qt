@@ -1,20 +1,17 @@
-#include "propertieswindow.h"
-#include "ui_propertieswindow.h"
-#include <QDebug>
-#include <functional>
+#include "preferenceswindow.h"
+#include "ui_preferenceswindow.h"
 
-PropertiesWindow::PropertiesWindow(Properties prop, QWidget *parent) :
+PreferencesWindow::PreferencesWindow(Properties prop, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::PropertiesWindow),
-    properties(prop),
-    confirmedProperties(prop)
+    ui(new Ui::PreferencesWindow),
+    properties(prop)
 {
     ui->setupUi(this);
     DrawPreview();
     connect(ui->textColorButton, &QPushButton::pressed,
-            this, &PropertiesWindow::onTextColorButtonPressed);
+            this, &PreferencesWindow::onTextColorButtonPressed);
     connect(ui->backColorButton, &QPushButton::pressed,
-            this, &PropertiesWindow::onBackColorButtonPressed);
+            this, &PreferencesWindow::onBackColorButtonPressed);
     // todo: find alternative, don't get accepted signal directly, so emitting manually
     connect(ui->buttonBox, &QDialogButtonBox::accepted,
             [&]()
@@ -31,8 +28,7 @@ PropertiesWindow::PropertiesWindow(Properties prop, QWidget *parent) :
             }
     );
 }
-
-void PropertiesWindow::onTextColorButtonPressed()
+void PreferencesWindow::onTextColorButtonPressed()
 {
     if (! textColorSelector)
     {
@@ -70,7 +66,7 @@ void PropertiesWindow::onTextColorButtonPressed()
     textColorSelector->show();
 }
 
-void PropertiesWindow::onBackColorButtonPressed()
+void PreferencesWindow::onBackColorButtonPressed()
 {
     if (! backColorSelector)
     {
@@ -108,12 +104,12 @@ void PropertiesWindow::onBackColorButtonPressed()
     backColorSelector->show();
 }
 
-Properties PropertiesWindow::GetProperties()
+Properties PreferencesWindow::GetProperties()
 {
     return confirmedProperties;
 }
 
-void PropertiesWindow::DrawPreview(void)
+void PreferencesWindow::DrawPreview(void)
 {
     QString textColorString = QString("color: rgb(%1, %2, %3);")
             .arg(properties.textColor.red())
@@ -128,7 +124,7 @@ void PropertiesWindow::DrawPreview(void)
     ui->sampleText->setText(ui->sampleText->toPlainText());
 }
 
-PropertiesWindow::~PropertiesWindow()
+PreferencesWindow::~PreferencesWindow()
 {
     delete ui;
 }

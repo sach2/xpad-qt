@@ -8,6 +8,7 @@
 #include<string>
 #include<istream>
 #include<pad.h>
+#include<preferenceswindow.h>
 
 PadWindow::PadWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,29 +21,35 @@ PadWindow::PadWindow(QWidget *parent) :
 
 void PadWindow::initContextMenu()
 {
-    QAction* newPadAction = new QAction("&New pad", this);
+    auto newPadAction = new QAction("&New pad", this);
     newPadAction->setShortcutContext(Qt::ApplicationShortcut);
     newPadAction->setShortcut(QKeySequence::New);
     connect(newPadAction, &QAction::triggered, [&](){
         emit pad->newPadRequested();
     });
-    QAction* propertiesAction = new QAction("&Properties", ui->textEdit);
+    auto propertiesAction = new QAction("&Properties", ui->textEdit);
     propertiesAction->setShortcut(QKeySequence("Ctrl+,"));
     connect(propertiesAction, &QAction::triggered, [&](){
         propertiesWindowRequested();;
     });
-    QAction* closeAction = new QAction("&Close", ui->textEdit);
+    auto preferencesAction = new QAction("P&references", ui->textEdit);
+    preferencesAction->setShortcut(QKeySequence("Ctrl+p"));
+    connect(preferencesAction, &QAction::triggered, [&](){
+        preferencesWindowRequested();
+    });
+    auto closeAction = new QAction("&Close", ui->textEdit);
     closeAction->setShortcut(QKeySequence::Close);
     connect(closeAction, &QAction::triggered, [&](){
         hide();
     });
-    QAction* deletePadAction = new QAction("&Delete pad", ui->textEdit);
+    auto deletePadAction = new QAction("&Delete pad", ui->textEdit);
     deletePadAction->setShortcut(QKeySequence("Shift+Del"));
     connect(deletePadAction, &QAction::triggered,[&](){
         emit pad->deletePadRequested(pad);
     });
     actions.push_back(newPadAction);
     actions.push_back(propertiesAction);
+    actions.push_back(preferencesAction);
     actions.push_back(closeAction);
     actions.push_back(deletePadAction);
     padMenu.addActions(actions);
@@ -90,6 +97,34 @@ void PadWindow::propertiesWindowRequested()
     // is hide necessary?
     propertiesWindow->hide();
     propertiesWindow->show();
+}
+
+void PadWindow::preferencesWindowRequested()
+{
+    if (!preferencesWindow)
+    {
+        // create instance and connect slots
+        preferencesWindow.reset(new PreferencesWindow(properties));
+        connect(preferencesWindow.get(), &QDialog::accepted,
+                [&]()
+                {
+//                    properties = propertiesWindow->GetProperties();
+//                    SyncWithProperties();
+            qDebug() << "accepted";
+                    preferencesWindow.reset(nullptr);
+                }
+        );
+        connect(preferencesWindow.get(), &QDialog::rejected,
+                [&]()
+                {
+            qDebug() << "rejected";
+                    preferencesWindow.reset(nullptr);
+                }
+        );
+    }
+    // is hide necessary?
+    preferencesWindow->hide();
+    preferencesWindow->show();
 }
 
 void PadWindow::SyncWithProperties()
