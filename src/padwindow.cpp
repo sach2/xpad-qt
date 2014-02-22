@@ -108,16 +108,14 @@ void PadWindow::preferencesWindowRequested()
         connect(preferencesWindow.get(), &QDialog::accepted,
                 [&]()
                 {
-//                    properties = propertiesWindow->GetProperties();
-//                    SyncWithProperties();
-            qDebug() << "accepted";
+                    properties = preferencesWindow->GetProperties();
+                    SyncWithProperties();
                     preferencesWindow.reset(nullptr);
                 }
         );
         connect(preferencesWindow.get(), &QDialog::rejected,
                 [&]()
                 {
-            qDebug() << "rejected";
                     preferencesWindow.reset(nullptr);
                 }
         );
