@@ -21,7 +21,8 @@ PadWindow::PadWindow(QWidget *parent) :
 
 void PadWindow::initContextMenu()
 {
-    auto newPadAction = new QAction(QIcon::fromTheme("window-new"),"&New pad", ui->textEdit);
+    auto newPadAction = new QAction(QIcon::fromTheme("window-new"),
+                                    "&New pad", ui->textEdit);
     newPadAction->setShortcutContext(Qt::ApplicationShortcut);
     newPadAction->setShortcut(QKeySequence::New);
     connect(newPadAction, &QAction::triggered, [&](){
@@ -29,21 +30,24 @@ void PadWindow::initContextMenu()
     });
     ui->textEdit->addAction(newPadAction);
 
-    auto propertiesAction = new QAction(QIcon::fromTheme("document-properties"), "&Properties", ui->textEdit);
+    auto propertiesAction = new QAction(QIcon::fromTheme("document-properties"),
+                                        "&Properties", ui->textEdit);
     propertiesAction->setShortcut(QKeySequence("Ctrl+,"));
     connect(propertiesAction, &QAction::triggered, [&](){
         propertiesWindowRequested();;
     });
     ui->textEdit->addAction(propertiesAction);
 
-    auto closeAction = new QAction(QIcon::fromTheme("window-close"),"&Close", ui->textEdit);
+    auto closeAction = new QAction(QIcon::fromTheme("window-close"),
+                                   "&Close", ui->textEdit);
     closeAction->setShortcut(QKeySequence::Close);
     connect(closeAction, &QAction::triggered, [&](){
         hide();
     });
     ui->textEdit->addAction(closeAction);
 
-    auto deletePadAction = new QAction(QIcon::fromTheme("edit-delete"),"&Delete pad", ui->textEdit);
+    auto deletePadAction = new QAction(QIcon::fromTheme("edit-delete"),
+                                       "&Delete pad", ui->textEdit);
     deletePadAction->setShortcut(QKeySequence("Ctrl+Del"));
     connect(deletePadAction, &QAction::triggered,[&](){
         emit pad->deletePadRequested(pad);
@@ -65,7 +69,8 @@ void PadWindow::initContextMenu()
     });
     ui->textEdit->addAction(readonlyAction);
 
-    auto preferencesAction = new QAction(QIcon::fromTheme("document-properties"), "P&references", ui->textEdit);
+    auto preferencesAction = new QAction(QIcon::fromTheme("document-properties"),
+                                         "P&references", ui->textEdit);
     preferencesAction->setShortcut(QKeySequence("Ctrl+p"));
     connect(preferencesAction, &QAction::triggered, [&](){
         preferencesWindowRequested();
