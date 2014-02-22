@@ -41,7 +41,7 @@ private:
     Ui::PadWindow *ui;
 
     void initContextMenu();
-    QMenu padMenu, editMenu;
+    QMenu* padMenu, *editMenu;
 };
 
 #endif // MAINWINDOW_H

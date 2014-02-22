@@ -28,34 +28,34 @@ void PadWindow::initContextMenu()
     connect(newPadAction, &QAction::triggered, [&](){
         emit pad->newPadRequested();
     });
-    //ui->textEdit->addAction(newPadAction);
+    ui->textEdit->addAction(newPadAction);
 
     auto propertiesAction = new QAction("&Properties", ui->textEdit);
     propertiesAction->setShortcut(QKeySequence("Ctrl+,"));
     connect(propertiesAction, &QAction::triggered, [&](){
         propertiesWindowRequested();;
     });
-    //ui->textEdit->addAction(propertiesAction);
+    ui->textEdit->addAction(propertiesAction);
 
     auto closeAction = new QAction("&Close", ui->textEdit);
     closeAction->setShortcut(QKeySequence::Close);
     connect(closeAction, &QAction::triggered, [&](){
         hide();
     });
-    //ui->textEdit->addAction(closeAction);
+    ui->textEdit->addAction(closeAction);
 
     auto deletePadAction = new QAction("&Delete pad", ui->textEdit);
     deletePadAction->setShortcut(QKeySequence("Shift+Del"));
     connect(deletePadAction, &QAction::triggered,[&](){
         emit pad->deletePadRequested(pad);
     });
-    //ui->textEdit->addAction(deletePadAction);
+    ui->textEdit->addAction(deletePadAction);
 
-    padMenu.setTitle("&Pad");
-    padMenu.addAction(newPadAction);
-    padMenu.addAction(propertiesAction);
-    padMenu.addAction(closeAction);
-    padMenu.addAction(deletePadAction);
+    padMenu = new QMenu("&Pad");
+    padMenu->addAction(newPadAction);
+    padMenu->addAction(propertiesAction);
+    padMenu->addAction(closeAction);
+    padMenu->addAction(deletePadAction);
 
     auto readonlyAction = new QAction("&Readonly", ui->textEdit);
     readonlyAction->setCheckable(true);
@@ -64,18 +64,18 @@ void PadWindow::initContextMenu()
         properties.readonly = !properties.readonly;
         ui->textEdit->setReadOnly(properties.readonly);
     });
-    //ui->textEdit->addAction(readonlyAction);
+    ui->textEdit->addAction(readonlyAction);
 
     auto preferencesAction = new QAction("P&references", ui->textEdit);
     preferencesAction->setShortcut(QKeySequence("Ctrl+p"));
     connect(preferencesAction, &QAction::triggered, [&](){
         preferencesWindowRequested();
     });
-    //ui->textEdit->addAction(preferencesAction);
+    ui->textEdit->addAction(preferencesAction);
 
-    editMenu.setTitle("&Edit");
-    editMenu.addAction(readonlyAction);
-    editMenu.addAction(preferencesAction);
+    editMenu = new QMenu("&Edit");
+    editMenu->addAction(readonlyAction);
+    editMenu->addAction(preferencesAction);
 
     ui->textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->textEdit, &QWidget::customContextMenuRequested,
@@ -86,8 +86,8 @@ void PadWindow::showContextMenu(const QPoint &pos)
 {
     QPoint globalPos = ui->textEdit->mapToGlobal(pos);
     QMenu contextMenu;
-    contextMenu.addMenu(&padMenu);
-    contextMenu.addMenu(&editMenu);
+    contextMenu.addMenu(padMenu);
+    contextMenu.addMenu(editMenu);
     contextMenu.exec(globalPos);
 }
 
