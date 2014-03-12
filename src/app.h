@@ -2,14 +2,17 @@
 #define APP_H
 
 #include <QSystemTrayIcon>
+#include<QMenu>
+
 #include <memory>
 #include <thread>
 #include "padgroup.h"
+#include <QApplication>
 
 using namespace std;
 
 // Application object, contains top level objects and functionality
-class App : public QObject
+class App : public QApplication
 {
     Q_OBJECT
     unique_ptr<QSystemTrayIcon> trayIcon;
@@ -17,13 +20,16 @@ class App : public QObject
     QString iconPath;
     QString padDirectory;
     std::thread padSaverThread;
+    QMenu contextMenu;
 private:
     void SavePadsThread();
 public:
-    App();
+    App(int argc, char* argv[]);
     void CreateTrayMenu();
     void HideTray();
     void LoadPads();
+    void AddMenu(QMenu* menu);
+    QMenu& GetContextMenu();
 public slots:
     void newPadRequested();
 };

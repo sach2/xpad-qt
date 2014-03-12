@@ -8,7 +8,7 @@
 
 #include <pad.h>
 
-App::App():
+App::App(int argc, char* argv[]):QApplication(argc, argv),
     trayIcon(new QSystemTrayIcon),
     padGroup(new PadGroup())
 {
@@ -100,3 +100,12 @@ void App::HideTray()
     padSaverThread.detach();
 }
 
+void App::AddMenu(QMenu* menu)
+{
+    contextMenu.addMenu(menu);
+}
+
+QMenu& App::GetContextMenu()
+{
+    return contextMenu;
+}

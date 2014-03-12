@@ -1,6 +1,7 @@
 
 #include "padwindow.h"
 #include "ui_padwindow.h"
+#include "app.h"
 
 #include<QDebug>
 #include<QCloseEvent>
@@ -88,11 +89,11 @@ void PadWindow::initContextMenu()
 
 void PadWindow::showContextMenu(const QPoint &pos)
 {
+    App* app = (App*)qApp;
     QPoint globalPos = ui->textEdit->mapToGlobal(pos);
-    QMenu contextMenu;
-    contextMenu.addMenu(padMenu);
-    contextMenu.addMenu(editMenu);
-    contextMenu.exec(globalPos);
+    app->AddMenu(padMenu);
+    app->AddMenu(editMenu);
+    app->GetContextMenu().exec(globalPos);
 }
 
 PadWindow::~PadWindow()
