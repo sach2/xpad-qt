@@ -33,7 +33,7 @@ bool PadWindow::eventFilter(QObject *object, QEvent *event)
             app->contextMenuCreator.Register(Preferences, preferencesAction);
             auto closeAction = std::bind(&PadWindow::hide, this);
             app->contextMenuCreator.Register(ClosePad, closeAction);
-            auto deleteAction = std::bind(&Pad::deletePadRequested, pad, pad);
+            auto deleteAction = [this](){emit pad->deletePadRequested(pad);};
             app->contextMenuCreator.Register(DeletePad, deleteAction);
         }
     }
