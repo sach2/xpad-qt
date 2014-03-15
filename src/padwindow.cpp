@@ -71,17 +71,7 @@ void PadWindow::initContextMenu()
 
     ui->textEdit->addAction(app->contextMenuCreator.GetAction(DeletePad));
 
-    padMenu = new QMenu("&Pad");
-    //padMenu->addAction(newPadAction);
-    //padMenu->addAction(propertiesAction);
-   // padMenu->addAction(closeAction);
-    //padMenu->addAction(deletePadAction);
-
     ui->textEdit->addAction(app->contextMenuCreator.GetAction(Preferences));
-
-    editMenu = new QMenu("&Edit");
-    //editMenu->addAction(readonlyAction);
-    //editMenu->addAction(preferencesAction);
 
     ui->textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->textEdit, &QWidget::customContextMenuRequested,
