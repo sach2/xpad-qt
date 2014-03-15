@@ -6,9 +6,11 @@
 #include <QPoint>
 #include <set>
 #include <vector>
+#include <list>
 #include <tuple>
 #include <functional>
 #include <QMenu>
+#include "IMenuPlaceholderProvider.h"
 
 class PadWindow;
 
@@ -28,12 +30,15 @@ enum MenuItems
 class ContextMenuCreator
 {
     std::map<MenuItems, QAction*> menuItemToActionMap;
+    std::map<MenuPlaceholders, std::list<IMenuPlaceholderProvider*>> placeholderToActionMap;
     QPoint pos;
     QMenu mainMenu;
 public:
     ContextMenuCreator();
     void SetInfo(const QPoint& point){pos = point;}
     void Register(MenuItems menuItem, std::function<void()> action);
+    void RegisterPlaceholder(MenuPlaceholders placeholder, IMenuPlaceholderProvider* action);
+    void UnregisterPlaceholder(MenuPlaceholders, IMenuPlaceholderProvider* action);
     void Unregister(MenuItems menuItem);
     void Display();
     QAction* GetAction(MenuItems menuItem);

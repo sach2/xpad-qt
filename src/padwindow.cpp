@@ -19,10 +19,23 @@ PadWindow::PadWindow(QWidget *parent) :
     SyncWithProperties();
     initContextMenu();
     App* app = (App*)qApp;
-    app->contextMenuCreator.Register(ShowAll, std::bind(&PadWindow::show, this));
+    app->contextMenuCreator.Register(ShowAll, std::bind(&PadWindow::activateWindow, this));
     app->contextMenuCreator.Register(HideAll, std::bind(&PadWindow::hide, this));
     ui->textEdit->installEventFilter(this);
+    app->contextMenuCreator.RegisterPlaceholder(PadList, this);
 }
+void PadWindow::AddPlaceholderActions(MenuPlaceholders placeholder, QMenu& menu)
+{
+    if (placeholder == MenuPlaceholders::PadList)
+    {
+        padaction = new QAction(
+                    QString("1. %2").arg(pad->getTitle()),
+                    NULL);
+        connect(padaction, &QAction::triggered,[this](){activateWindow();});
+        menu.addAction(padaction);
+    }
+}
+
 bool PadWindow::eventFilter(QObject *object, QEvent *event)
 {
     App* app = (App*)qApp;

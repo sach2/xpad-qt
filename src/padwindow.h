@@ -8,6 +8,7 @@
 #include <QList>
 #include <memory>
 #include <QMenu>
+#include "IMenuPlaceholderProvider.h"
 
 class Pad;
 namespace Ui {
@@ -16,7 +17,7 @@ class PadWindow;
 
 using namespace std;
 
-class PadWindow : public QMainWindow
+class PadWindow : public QMainWindow, public IMenuPlaceholderProvider
 {
     Q_OBJECT
     
@@ -28,6 +29,7 @@ public:
     void SetText(QString text);
     QString GetText();
     void SyncWithProperties();
+    void AddPlaceholderActions(MenuPlaceholders placeholder, QMenu& menu);
 public slots:
     void closeEvent(QCloseEvent *);
     void propertiesWindowRequested();
@@ -40,7 +42,7 @@ private:
     unique_ptr<PropertiesWindow> propertiesWindow;
     unique_ptr<PreferencesWindow> preferencesWindow;
     Ui::PadWindow *ui;
-
+    QAction* padaction;
     void initContextMenu();
 };
 

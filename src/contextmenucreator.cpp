@@ -42,16 +42,38 @@ ContextMenuCreator::ContextMenuCreator()
     readonlyAction->setCheckable(true);
     menuItemToActionMap[Readonly] = readonlyAction;
 }
+
 void ContextMenuCreator::Register(MenuItems menuItem, std::function<void()> action)
 {
     auto menu_action = GetAction(menuItem);
     menu_action->connect(menu_action, &QAction::triggered, action);
 }
+
 void ContextMenuCreator::Unregister(MenuItems menuItem)
 {
     auto menu_action = GetAction(menuItem);
     QObject::disconnect(menu_action, 0, 0, 0);
 }
+
+void ContextMenuCreator::RegisterPlaceholder(MenuPlaceholders placeholder, IMenuPlaceholderProvider *action)
+{
+    if (placeholderToActionMap.find(placeholder) == placeholderToActionMap.end())
+    {
+        std::list<IMenuPlaceholderProvider*> actionlist;
+        placeholderToActionMap.insert(make_pair(placeholder,actionlist));
+    }
+    std::list<IMenuPlaceholderProvider*>& list = placeholderToActionMap[placeholder];
+    list.push_back(action);
+}
+
+void ContextMenuCreator::UnregisterPlaceholder(MenuPlaceholders placeholder, IMenuPlaceholderProvider *action)
+{
+    if (placeholderToActionMap.find(placeholder) != placeholderToActionMap.end())
+    {
+        placeholderToActionMap[placeholder].remove(action);
+    }
+}
+
 void ContextMenuCreator::Display()
 {
     mainMenu.clear();
@@ -70,6 +92,19 @@ void ContextMenuCreator::Display()
     auto notesMenu = new QMenu("&Notes");
     notesMenu->addAction(GetAction(ShowAll));
     notesMenu->addAction(GetAction(HideAll));
+    // add PadList placeholders from providers
+    std::for_each(placeholderToActionMap.begin(), placeholderToActionMap.end(),
+                  [&notesMenu](pair<MenuPlaceholders, std::list<IMenuPlaceholderProvider*>> entry)
+    {
+        if (entry.first == PadList)
+        {
+            std::for_each(entry.second.begin(), entry.second.end(),
+                  [&notesMenu](IMenuPlaceholderProvider* provider)
+            {
+                provider->AddPlaceholderActions(PadList, *notesMenu);
+            });
+        }
+    });
     mainMenu.addMenu(notesMenu);
 
     mainMenu.exec(pos);

@@ -32,7 +32,8 @@ HEADERS  += \
     properties.h \
     padserializer.h \
     preferenceswindow.h \
-    contextmenucreator.h
+    contextmenucreator.h \
+    IMenuPlaceholderProvider.h
 
 FORMS    += \
     padwindow.ui \
