@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     propertieswindow.cpp \
     properties.cpp \
     padserializer.cpp \
-    preferenceswindow.cpp
+    preferenceswindow.cpp \
+    contextmenucreator.cpp
 
 HEADERS  += \
     pad.h \
@@ -30,7 +31,8 @@ HEADERS  += \
     propertieswindow.h \
     properties.h \
     padserializer.h \
-    preferenceswindow.h
+    preferenceswindow.h \
+    contextmenucreator.h
 
 FORMS    += \
     padwindow.ui \
