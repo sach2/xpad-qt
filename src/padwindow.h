@@ -33,6 +33,7 @@ public slots:
     void propertiesWindowRequested();
     void preferencesWindowRequested();
     void showContextMenu(const QPoint& pos);
+    bool eventFilter(QObject *object, QEvent *event);
 private:
     Pad*pad;
     QList<QAction*> actions;

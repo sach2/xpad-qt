@@ -28,8 +28,10 @@ class ContextMenuCreator
 public:
     ContextMenuCreator();
     void SetInfo(const QPoint& point){pos = point;}
-    void registerFor(MenuItems menuItem, std::function<void()> action);
-    void display();
+    void Register(MenuItems menuItem, std::function<void()> action);
+    void Unregister(MenuItems menuItem);
+    void Display();
+    QAction* GetAction(MenuItems menuItem);
 };
 
 #endif // CONTEXTMENUCREATOR_H

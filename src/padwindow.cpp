@@ -18,6 +18,27 @@ PadWindow::PadWindow(QWidget *parent) :
     ui->setupUi(this);
     SyncWithProperties();
     initContextMenu();
+    ui->textEdit->installEventFilter(this);
+}
+bool PadWindow::eventFilter(QObject *object, QEvent *event)
+{
+    App* app = (App*)qApp;
+    if (event->type() == QEvent::FocusIn)
+    {
+        if (object == ui->textEdit)
+        {
+            auto action = std::bind(&PadWindow::preferencesWindowRequested, this);
+            app->contextMenuCreator.Register(PadProperties, action);
+        }
+    }
+    else if(event->type() == QEvent::FocusOut)
+    {
+        if (object == ui->textEdit)
+        {
+            app->contextMenuCreator.Unregister(PadProperties);
+        }
+    }
+    return false;
 }
 
 void PadWindow::initContextMenu()
@@ -92,9 +113,7 @@ void PadWindow::showContextMenu(const QPoint &pos)
     App* app = (App*)qApp;
     QPoint globalPos = ui->textEdit->mapToGlobal(pos);
     app->contextMenuCreator.SetInfo(globalPos);
-    auto action = std::bind(&PadWindow::preferencesWindowRequested, this);
-    app->contextMenuCreator.registerFor(PadProperties, action);
-    app->contextMenuCreator.display();
+    app->contextMenuCreator.Display();
 }
 
 PadWindow::~PadWindow()
