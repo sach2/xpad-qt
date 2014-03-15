@@ -22,6 +22,7 @@ public:
     void deletePad();
     QString getTitle();
 signals:
+    // todo - check if this can be removed
     void newPadRequested();
     void deletePadRequested(Pad* pad);
 public slots:

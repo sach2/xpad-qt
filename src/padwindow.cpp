@@ -33,6 +33,8 @@ bool PadWindow::eventFilter(QObject *object, QEvent *event)
             app->contextMenuCreator.Register(Preferences, preferencesAction);
             auto closeAction = std::bind(&PadWindow::hide, this);
             app->contextMenuCreator.Register(ClosePad, closeAction);
+            auto deleteAction = std::bind(&Pad::deletePadRequested, pad, pad);
+            app->contextMenuCreator.Register(DeletePad, deleteAction);
         }
     }
     else if(event->type() == QEvent::FocusOut)
@@ -42,6 +44,7 @@ bool PadWindow::eventFilter(QObject *object, QEvent *event)
             app->contextMenuCreator.Unregister(PadProperties);
             app->contextMenuCreator.Unregister(Preferences);
             app->contextMenuCreator.Unregister(ClosePad);
+            app->contextMenuCreator.Unregister(DeletePad);
         }
     }
     return false;
@@ -56,19 +59,13 @@ void PadWindow::initContextMenu()
 
     ui->textEdit->addAction(app->contextMenuCreator.GetAction(ClosePad));
 
-    auto deletePadAction = new QAction(QIcon::fromTheme("edit-delete"),
-                                       "&Delete pad", ui->textEdit);
-    deletePadAction->setShortcut(QKeySequence("Ctrl+Del"));
-    connect(deletePadAction, &QAction::triggered,[&](){
-        emit pad->deletePadRequested(pad);
-    });
-    ui->textEdit->addAction(deletePadAction);
+    ui->textEdit->addAction(app->contextMenuCreator.GetAction(DeletePad));
 
     padMenu = new QMenu("&Pad");
     //padMenu->addAction(newPadAction);
     //padMenu->addAction(propertiesAction);
    // padMenu->addAction(closeAction);
-    padMenu->addAction(deletePadAction);
+    //padMenu->addAction(deletePadAction);
 
     auto readonlyAction = new QAction("&Readonly", ui->textEdit);
     readonlyAction->setCheckable(true);

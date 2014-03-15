@@ -29,6 +29,7 @@ void PadGroup::deletePad(Pad* pad)
 Pad* PadGroup::newPadWithInfo(QString filename)
 {
     auto pad = new Pad(PadSerializer(filename));
+    // todo - check if this can be removed
     connect(pad, &Pad::newPadRequested, this, &PadGroup::CreateNewPad);
     connect(pad, &Pad::deletePadRequested, [&](Pad* pad){
         deletePad(pad);

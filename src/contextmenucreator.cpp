@@ -28,6 +28,12 @@ ContextMenuCreator::ContextMenuCreator()
     preferencesAction->setShortcut(QKeySequence("Ctrl+p"));
     sequenceOfItems.push_back(Preferences);
     menuItemToActionMap[Preferences] = preferencesAction;
+
+    auto deletePadAction = new QAction(QIcon::fromTheme("edit-delete"),
+                                       "&Delete pad", nullptr);
+    deletePadAction->setShortcut(QKeySequence("Ctrl+Del"));
+    sequenceOfItems.push_back(DeletePad);
+    menuItemToActionMap[DeletePad] = deletePadAction;
 }
 void ContextMenuCreator::Register(MenuItems menuItem, std::function<void()> action)
 {
