@@ -4,17 +4,24 @@
 
 ContextMenuCreator::ContextMenuCreator()
 {
+    auto newPadAction = new QAction(QIcon::fromTheme("window-new"),
+                                    "&New pad", nullptr);
+    newPadAction->setShortcutContext(Qt::ApplicationShortcut);
+    newPadAction->setShortcut(QKeySequence::New);
+    sequenceOfItems.push_back(NewPad);
+    menuItemToActionMap[NewPad] = newPadAction;
+
     auto closeAction = new QAction(QIcon::fromTheme("window-close"),
                                    "&Close", nullptr);
     closeAction->setShortcut(QKeySequence::Close);
     sequenceOfItems.push_back(ClosePad);
-    menuItemToActionMap.insert(std::make_pair(ClosePad, closeAction));
+    menuItemToActionMap[ClosePad] = closeAction;
 
     auto preferencesAction = new QAction(QIcon::fromTheme("document-properties"),
                                          "P&references", nullptr);
     preferencesAction->setShortcut(QKeySequence("Ctrl+p"));
     sequenceOfItems.push_back(Preferences);
-    menuItemToActionMap.insert(std::make_pair(Preferences, preferencesAction));
+    menuItemToActionMap[Preferences] = preferencesAction;
 }
 void ContextMenuCreator::Register(MenuItems menuItem, std::function<void()> action)
 {

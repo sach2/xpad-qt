@@ -35,6 +35,9 @@ App::App(int argc, char* argv[]):QApplication(argc, argv),
     padGroup->SetDirectory(padDirectory);
     connect(padGroup.get(), &PadGroup::numberOfPadsChanged,
             this, &App::CreateTrayMenu);
+
+    // add new pad action
+    contextMenuCreator.Register(NewPad, std::bind(&App::newPadRequested, this));
 }
 
 void App::SavePadsThread()

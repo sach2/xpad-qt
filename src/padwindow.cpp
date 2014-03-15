@@ -46,14 +46,8 @@ bool PadWindow::eventFilter(QObject *object, QEvent *event)
 
 void PadWindow::initContextMenu()
 {
-    auto newPadAction = new QAction(QIcon::fromTheme("window-new"),
-                                    "&New pad", ui->textEdit);
-    newPadAction->setShortcutContext(Qt::ApplicationShortcut);
-    newPadAction->setShortcut(QKeySequence::New);
-    connect(newPadAction, &QAction::triggered, [&](){
-        emit pad->newPadRequested();
-    });
-    ui->textEdit->addAction(newPadAction);
+    App* app = (App*)qApp;
+    ui->textEdit->addAction(app->contextMenuCreator.GetAction(NewPad));
 
     auto propertiesAction = new QAction(QIcon::fromTheme("document-properties"),
                                         "&Properties", ui->textEdit);
@@ -63,7 +57,6 @@ void PadWindow::initContextMenu()
     });
     ui->textEdit->addAction(propertiesAction);
 
-    App* app = (App*)qApp;
     ui->textEdit->addAction(app->contextMenuCreator.GetAction(ClosePad));
 
     auto deletePadAction = new QAction(QIcon::fromTheme("edit-delete"),
@@ -75,7 +68,7 @@ void PadWindow::initContextMenu()
     ui->textEdit->addAction(deletePadAction);
 
     padMenu = new QMenu("&Pad");
-    padMenu->addAction(newPadAction);
+    //padMenu->addAction(newPadAction);
     padMenu->addAction(propertiesAction);
    // padMenu->addAction(closeAction);
     padMenu->addAction(deletePadAction);
