@@ -92,6 +92,7 @@ void ContextMenuCreator::Display()
     auto notesMenu = new QMenu("&Notes");
     notesMenu->addAction(GetAction(ShowAll));
     notesMenu->addAction(GetAction(HideAll));
+    notesMenu->addSeparator();
     // add PadList placeholders from providers
     std::for_each(placeholderToActionMap.begin(), placeholderToActionMap.end(),
                   [&notesMenu](pair<MenuPlaceholders, std::list<IMenuPlaceholderProvider*>> entry)
