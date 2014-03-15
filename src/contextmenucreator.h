@@ -29,8 +29,6 @@ class ContextMenuCreator
 {
     std::map<MenuItems, QAction*> menuItemToActionMap;
     QPoint pos;
-    std::set<int> registeredItems;
-    std::vector<int> padMenuItems;
     QMenu mainMenu;
 public:
     ContextMenuCreator();

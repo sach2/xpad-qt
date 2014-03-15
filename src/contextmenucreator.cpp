@@ -4,11 +4,6 @@
 
 ContextMenuCreator::ContextMenuCreator()
 {
-    padMenuItems.push_back(NewPad);
-    padMenuItems.push_back(PadProperties);
-    padMenuItems.push_back(ClosePad);
-    padMenuItems.push_back(DeletePad);
-
     auto newPadAction = new QAction(QIcon::fromTheme("window-new"),
                                     "&New pad", nullptr);
     newPadAction->setShortcutContext(Qt::ApplicationShortcut);
@@ -49,8 +44,6 @@ ContextMenuCreator::ContextMenuCreator()
 }
 void ContextMenuCreator::Register(MenuItems menuItem, std::function<void()> action)
 {
-    if (registeredItems.find(menuItem) == registeredItems.end())
-        registeredItems.insert(menuItem);
     auto menu_action = GetAction(menuItem);
     menu_action->connect(menu_action, &QAction::triggered, action);
 }
@@ -63,16 +56,10 @@ void ContextMenuCreator::Display()
 {
     mainMenu.clear();
     auto padMenu = new QMenu("&Pad");
-    std::for_each(padMenuItems.begin(), padMenuItems.end(),
-                  [this, &padMenu](int menuItem)
-    {
-        if (registeredItems.find(menuItem) != registeredItems.end())
-        {
-            auto a = (*menuItemToActionMap.find((MenuItems)menuItem));
-            padMenu->addAction(a.second);
-        }
-    }
-    );
+    padMenu->addAction(GetAction(NewPad));
+    padMenu->addAction(GetAction(PadProperties));
+    padMenu->addAction(GetAction(ClosePad));
+    padMenu->addAction(GetAction(DeletePad));
     mainMenu.addMenu(padMenu);
 
     auto editMenu = new QMenu("&Edit");
