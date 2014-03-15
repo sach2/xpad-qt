@@ -74,9 +74,21 @@ void ContextMenuCreator::UnregisterPlaceholder(MenuPlaceholders placeholder, IMe
     }
 }
 
-void ContextMenuCreator::Display()
+void ContextMenuCreator::Create(MenuContext context)
 {
     mainMenu.clear();
+    switch(context)
+    {
+    case OnPad:
+        DisplayOnPad();
+        break;
+    case OnTray:
+        PrepareForTray();
+        break;
+    }
+}
+void ContextMenuCreator::DisplayOnPad()
+{
     auto padMenu = new QMenu("&Pad");
     padMenu->addAction(GetAction(NewPad));
     padMenu->addAction(GetAction(PadProperties));
@@ -110,6 +122,31 @@ void ContextMenuCreator::Display()
 
     mainMenu.exec(pos);
 }
+
+void ContextMenuCreator::PrepareForTray()
+{
+    mainMenu.addAction(GetAction(NewPad));
+
+    mainMenu.addAction(GetAction(Preferences));
+
+    mainMenu.addAction(GetAction(ShowAll));
+    mainMenu.addAction(GetAction(HideAll));
+    mainMenu.addSeparator();
+    // add PadList placeholders from providers
+    std::for_each(placeholderToActionMap.begin(), placeholderToActionMap.end(),
+                  [this](pair<MenuPlaceholders, std::list<IMenuPlaceholderProvider*>> entry)
+    {
+        if (entry.first == PadList)
+        {
+            std::for_each(entry.second.begin(), entry.second.end(),
+                  [this](IMenuPlaceholderProvider* provider)
+            {
+                provider->AddPlaceholderActions(PadList, mainMenu);
+            });
+        }
+    });
+}
+
 QAction* ContextMenuCreator::GetAction(MenuItems menuItem)
 {
     return menuItemToActionMap[menuItem];

@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <functional>
 #include <QDir>
-
+#include <QMouseEvent>
 #include <pad.h>
 
 App::App(int argc, char* argv[]):QApplication(argc, argv),
@@ -53,6 +53,7 @@ void App::SavePadsThread()
 void App::CreateTrayMenu()
 {
     delete trayIcon->contextMenu();
+    /*
     auto trayIconMenu = new QMenu();
 
     // new pad action
@@ -78,8 +79,9 @@ void App::CreateTrayMenu()
     //todo - not working, should work according to new syntax
     //trayIcon->connect(quitAction, SIGNAL(triggered()), qApp, &QApplication::quit);
     trayIconMenu->addAction(quitAction);
-
-    trayIcon->setContextMenu(trayIconMenu);
+*/
+    contextMenuCreator.Create(OnTray);
+    trayIcon->setContextMenu(contextMenuCreator.GetMenu());
 }
 
 // new pad action slot

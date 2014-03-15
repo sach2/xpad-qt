@@ -27,21 +27,31 @@ enum MenuItems
     HideAll
 };
 
+enum MenuContext
+{
+    OnPad = 0,
+    OnTray
+};
+
 class ContextMenuCreator
 {
     std::map<MenuItems, QAction*> menuItemToActionMap;
     std::map<MenuPlaceholders, std::list<IMenuPlaceholderProvider*>> placeholderToActionMap;
     QPoint pos;
     QMenu mainMenu;
+    void DisplayOnPad();
+    void PrepareForTray();
 public:
+    MenuContext context;
     ContextMenuCreator();
     void SetInfo(const QPoint& point){pos = point;}
     void Register(MenuItems menuItem, std::function<void()> action);
     void RegisterPlaceholder(MenuPlaceholders placeholder, IMenuPlaceholderProvider* action);
     void UnregisterPlaceholder(MenuPlaceholders, IMenuPlaceholderProvider* action);
     void Unregister(MenuItems menuItem);
-    void Display();
+    void Create(MenuContext context);
     QAction* GetAction(MenuItems menuItem);
+    QMenu* GetMenu()  {   return &mainMenu;    }
 };
 
 #endif // CONTEXTMENUCREATOR_H

@@ -94,7 +94,7 @@ void PadWindow::showContextMenu(const QPoint &pos)
     App* app = (App*)qApp;
     QPoint globalPos = ui->textEdit->mapToGlobal(pos);
     app->contextMenuCreator.SetInfo(globalPos);
-    app->contextMenuCreator.Display();
+    app->contextMenuCreator.Create(OnPad);
 }
 
 PadWindow::~PadWindow()
