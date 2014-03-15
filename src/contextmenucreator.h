@@ -8,6 +8,7 @@
 #include <vector>
 #include <tuple>
 #include <functional>
+#include <QMenu>
 
 class PadWindow;
 
@@ -18,7 +19,9 @@ enum MenuItems
     ClosePad,
     DeletePad,
     PadProperties,
-    Preferences
+    Preferences,
+    ShowAll,
+    HideAll
 };
 
 class ContextMenuCreator
@@ -26,7 +29,8 @@ class ContextMenuCreator
     std::map<MenuItems, QAction*> menuItemToActionMap;
     QPoint pos;
     std::set<int> registeredItems;
-    std::vector<int> sequenceOfItems;
+    std::vector<int> padMenuItems;
+    QMenu mainMenu;
 public:
     ContextMenuCreator();
     void SetInfo(const QPoint& point){pos = point;}

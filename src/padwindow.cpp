@@ -18,6 +18,9 @@ PadWindow::PadWindow(QWidget *parent) :
     ui->setupUi(this);
     SyncWithProperties();
     initContextMenu();
+    App* app = (App*)qApp;
+    app->contextMenuCreator.Register(ShowAll, std::bind(&PadWindow::show, this));
+    app->contextMenuCreator.Register(HideAll, std::bind(&PadWindow::hide, this));
     ui->textEdit->installEventFilter(this);
 }
 bool PadWindow::eventFilter(QObject *object, QEvent *event)
@@ -76,17 +79,11 @@ void PadWindow::initContextMenu()
     });
     ui->textEdit->addAction(readonlyAction);
 
-    auto preferencesAction = new QAction(QIcon::fromTheme("document-properties"),
-                                         "P&references", ui->textEdit);
-    preferencesAction->setShortcut(QKeySequence("Ctrl+p"));
-    connect(preferencesAction, &QAction::triggered, [&](){
-        preferencesWindowRequested();
-    });
-    ui->textEdit->addAction(preferencesAction);
+    ui->textEdit->addAction(app->contextMenuCreator.GetAction(Preferences));
 
     editMenu = new QMenu("&Edit");
     editMenu->addAction(readonlyAction);
-    editMenu->addAction(preferencesAction);
+    //editMenu->addAction(preferencesAction);
 
     ui->textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->textEdit, &QWidget::customContextMenuRequested,
