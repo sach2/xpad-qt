@@ -11,6 +11,12 @@ ContextMenuCreator::ContextMenuCreator()
     sequenceOfItems.push_back(NewPad);
     menuItemToActionMap[NewPad] = newPadAction;
 
+    auto propertiesAction = new QAction(QIcon::fromTheme("document-properties"),
+                                        "&Properties", nullptr);
+    propertiesAction->setShortcut(QKeySequence("Ctrl+,"));
+    sequenceOfItems.push_back(PadProperties);
+    menuItemToActionMap[PadProperties] = propertiesAction;
+
     auto closeAction = new QAction(QIcon::fromTheme("window-close"),
                                    "&Close", nullptr);
     closeAction->setShortcut(QKeySequence::Close);

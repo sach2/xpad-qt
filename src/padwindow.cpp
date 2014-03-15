@@ -27,8 +27,10 @@ bool PadWindow::eventFilter(QObject *object, QEvent *event)
     {
         if (object == ui->textEdit)
         {
-            auto action = std::bind(&PadWindow::preferencesWindowRequested, this);
-            app->contextMenuCreator.Register(Preferences, action);
+            auto propertiesAction = std::bind(&PadWindow::propertiesWindowRequested, this);
+            app->contextMenuCreator.Register(PadProperties, propertiesAction);
+            auto preferencesAction = std::bind(&PadWindow::preferencesWindowRequested, this);
+            app->contextMenuCreator.Register(Preferences, preferencesAction);
             auto closeAction = std::bind(&PadWindow::hide, this);
             app->contextMenuCreator.Register(ClosePad, closeAction);
         }
@@ -37,6 +39,7 @@ bool PadWindow::eventFilter(QObject *object, QEvent *event)
     {
         if (object == ui->textEdit)
         {
+            app->contextMenuCreator.Unregister(PadProperties);
             app->contextMenuCreator.Unregister(Preferences);
             app->contextMenuCreator.Unregister(ClosePad);
         }
@@ -49,13 +52,7 @@ void PadWindow::initContextMenu()
     App* app = (App*)qApp;
     ui->textEdit->addAction(app->contextMenuCreator.GetAction(NewPad));
 
-    auto propertiesAction = new QAction(QIcon::fromTheme("document-properties"),
-                                        "&Properties", ui->textEdit);
-    propertiesAction->setShortcut(QKeySequence("Ctrl+,"));
-    connect(propertiesAction, &QAction::triggered, [&](){
-        propertiesWindowRequested();;
-    });
-    ui->textEdit->addAction(propertiesAction);
+    ui->textEdit->addAction(app->contextMenuCreator.GetAction(PadProperties));
 
     ui->textEdit->addAction(app->contextMenuCreator.GetAction(ClosePad));
 
@@ -69,7 +66,7 @@ void PadWindow::initContextMenu()
 
     padMenu = new QMenu("&Pad");
     //padMenu->addAction(newPadAction);
-    padMenu->addAction(propertiesAction);
+    //padMenu->addAction(propertiesAction);
    // padMenu->addAction(closeAction);
     padMenu->addAction(deletePadAction);
 
