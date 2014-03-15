@@ -4,11 +4,17 @@
 
 ContextMenuCreator::ContextMenuCreator()
 {
-    sequenceOfItems.push_back(PadProperties);
+    auto closeAction = new QAction(QIcon::fromTheme("window-close"),
+                                   "&Close", nullptr);
+    closeAction->setShortcut(QKeySequence::Close);
+    sequenceOfItems.push_back(ClosePad);
+    menuItemToActionMap.insert(std::make_pair(ClosePad, closeAction));
+
     auto preferencesAction = new QAction(QIcon::fromTheme("document-properties"),
                                          "P&references", nullptr);
     preferencesAction->setShortcut(QKeySequence("Ctrl+p"));
-    menuItemToActionMap.insert(std::make_pair(PadProperties, preferencesAction));
+    sequenceOfItems.push_back(Preferences);
+    menuItemToActionMap.insert(std::make_pair(Preferences, preferencesAction));
 }
 void ContextMenuCreator::Register(MenuItems menuItem, std::function<void()> action)
 {
@@ -19,25 +25,22 @@ void ContextMenuCreator::Register(MenuItems menuItem, std::function<void()> acti
 void ContextMenuCreator::Unregister(MenuItems menuItem)
 {
     auto menu_action = GetAction(menuItem);
-    //QObject::disconnect(menu_action, &QAction::triggered, padWindow);
     QObject::disconnect(menu_action, 0, 0, 0);
 }
 void ContextMenuCreator::Display()
 {
-    QAction* t;
+    auto editMenu = new QMenu("&Edit");
     std::for_each(sequenceOfItems.begin(), sequenceOfItems.end(),
-                  [this, &t](int menuItem)
+                  [this, &editMenu](int menuItem)
     {
         if (registeredItems.find(menuItem) != registeredItems.end())
         {
             auto a = (*menuItemToActionMap.find((MenuItems)menuItem));
-            t = a.second;
+            editMenu->addAction(a.second);
 
         }
     }
     );
-    auto editMenu = new QMenu("&Edit");
-    editMenu->addAction(t);
     editMenu->exec(pos);
 }
 QAction* ContextMenuCreator::GetAction(MenuItems menuItem)

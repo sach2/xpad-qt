@@ -15,8 +15,10 @@ enum MenuItems
 {
     NewPad = 0,
     EditPad,
+    ClosePad,
     DeletePad,
-    PadProperties
+    PadProperties,
+    Preferences
 };
 
 class ContextMenuCreator
