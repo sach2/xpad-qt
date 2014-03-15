@@ -7,7 +7,6 @@ ContextMenuCreator::ContextMenuCreator()
     padMenuItems.push_back(NewPad);
     padMenuItems.push_back(PadProperties);
     padMenuItems.push_back(ClosePad);
-    padMenuItems.push_back(Preferences);
     padMenuItems.push_back(DeletePad);
 
     auto newPadAction = new QAction(QIcon::fromTheme("window-new"),
@@ -78,6 +77,7 @@ void ContextMenuCreator::Display()
 
     auto editMenu = new QMenu("&Edit");
     editMenu->addAction(GetAction(Readonly));
+    editMenu->addAction(GetAction(Preferences));
     mainMenu.addMenu(editMenu);
 
     auto notesMenu = new QMenu("&Notes");
