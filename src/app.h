@@ -8,6 +8,7 @@
 #include <thread>
 #include "padgroup.h"
 #include <QApplication>
+#include "contextmenucreator.h"
 
 using namespace std;
 
@@ -20,7 +21,6 @@ class App : public QApplication
     QString iconPath;
     QString padDirectory;
     std::thread padSaverThread;
-    QMenu contextMenu;
 private:
     void SavePadsThread();
 public:
@@ -28,8 +28,7 @@ public:
     void CreateTrayMenu();
     void HideTray();
     void LoadPads();
-    void AddMenu(QMenu* menu);
-    QMenu& GetContextMenu();
+    ContextMenuCreator contextMenuCreator;
 public slots:
     void newPadRequested();
 };

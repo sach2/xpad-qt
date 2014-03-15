@@ -91,9 +91,10 @@ void PadWindow::showContextMenu(const QPoint &pos)
 {
     App* app = (App*)qApp;
     QPoint globalPos = ui->textEdit->mapToGlobal(pos);
-    app->AddMenu(padMenu);
-    app->AddMenu(editMenu);
-    app->GetContextMenu().exec(globalPos);
+    app->contextMenuCreator.SetInfo(globalPos);
+    auto action = std::bind(&PadWindow::preferencesWindowRequested, this);
+    app->contextMenuCreator.registerFor(PadProperties, action);
+    app->contextMenuCreator.display();
 }
 
 PadWindow::~PadWindow()

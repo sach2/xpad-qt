@@ -99,13 +99,3 @@ void App::HideTray()
     trayIcon->hide();
     padSaverThread.detach();
 }
-
-void App::AddMenu(QMenu* menu)
-{
-    contextMenu.addMenu(menu);
-}
-
-QMenu& App::GetContextMenu()
-{
-    return contextMenu;
-}
