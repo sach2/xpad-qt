@@ -19,6 +19,7 @@ enum MenuItems
     ClosePad,
     DeletePad,
     PadProperties,
+    Readonly,
     Preferences,
     ShowAll,
     HideAll

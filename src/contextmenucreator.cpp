@@ -43,6 +43,10 @@ ContextMenuCreator::ContextMenuCreator()
     auto hideAllAction = new QAction(QIcon::fromTheme("document-properties"),
                                          "Hide All", nullptr);
     menuItemToActionMap[HideAll] = hideAllAction;
+
+    auto readonlyAction = new QAction("&Readonly", nullptr);
+    readonlyAction->setCheckable(true);
+    menuItemToActionMap[Readonly] = readonlyAction;
 }
 void ContextMenuCreator::Register(MenuItems menuItem, std::function<void()> action)
 {
@@ -71,10 +75,16 @@ void ContextMenuCreator::Display()
     }
     );
     mainMenu.addMenu(padMenu);
+
+    auto editMenu = new QMenu("&Edit");
+    editMenu->addAction(GetAction(Readonly));
+    mainMenu.addMenu(editMenu);
+
     auto notesMenu = new QMenu("&Notes");
     notesMenu->addAction(GetAction(ShowAll));
     notesMenu->addAction(GetAction(HideAll));
     mainMenu.addMenu(notesMenu);
+
     mainMenu.exec(pos);
 }
 QAction* ContextMenuCreator::GetAction(MenuItems menuItem)

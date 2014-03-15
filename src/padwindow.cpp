@@ -38,6 +38,12 @@ bool PadWindow::eventFilter(QObject *object, QEvent *event)
             app->contextMenuCreator.Register(ClosePad, closeAction);
             auto deleteAction = [this](){emit pad->deletePadRequested(pad);};
             app->contextMenuCreator.Register(DeletePad, deleteAction);
+            app->contextMenuCreator.GetAction(Readonly)->setChecked(properties.readonly);
+            auto readonlyAction = [this](){
+                        properties.readonly = !properties.readonly;
+                        ui->textEdit->setReadOnly(properties.readonly);
+            };
+            app->contextMenuCreator.Register(Readonly, readonlyAction);
         }
     }
     else if(event->type() == QEvent::FocusOut)
@@ -48,6 +54,7 @@ bool PadWindow::eventFilter(QObject *object, QEvent *event)
             app->contextMenuCreator.Unregister(Preferences);
             app->contextMenuCreator.Unregister(ClosePad);
             app->contextMenuCreator.Unregister(DeletePad);
+            app->contextMenuCreator.Unregister(Readonly);
         }
     }
     return false;
@@ -70,19 +77,10 @@ void PadWindow::initContextMenu()
    // padMenu->addAction(closeAction);
     //padMenu->addAction(deletePadAction);
 
-    auto readonlyAction = new QAction("&Readonly", ui->textEdit);
-    readonlyAction->setCheckable(true);
-    readonlyAction->setChecked(properties.readonly);
-    connect(readonlyAction, &QAction::triggered, [&](){
-        properties.readonly = !properties.readonly;
-        ui->textEdit->setReadOnly(properties.readonly);
-    });
-    ui->textEdit->addAction(readonlyAction);
-
     ui->textEdit->addAction(app->contextMenuCreator.GetAction(Preferences));
 
     editMenu = new QMenu("&Edit");
-    editMenu->addAction(readonlyAction);
+    //editMenu->addAction(readonlyAction);
     //editMenu->addAction(preferencesAction);
 
     ui->textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
