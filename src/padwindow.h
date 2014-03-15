@@ -42,7 +42,6 @@ private:
     unique_ptr<PropertiesWindow> propertiesWindow;
     unique_ptr<PreferencesWindow> preferencesWindow;
     Ui::PadWindow *ui;
-    QAction* padaction;
     void initContextMenu();
 };
 

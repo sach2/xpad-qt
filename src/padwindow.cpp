@@ -28,11 +28,11 @@ void PadWindow::AddPlaceholderActions(MenuPlaceholders placeholder, QMenu& menu)
 {
     if (placeholder == MenuPlaceholders::PadList)
     {
-        padaction = new QAction(
+        auto switchToPadAction = new QAction(
                     QString("1. %2").arg(pad->getTitle()),
                     NULL);
-        connect(padaction, &QAction::triggered,[this](){activateWindow();});
-        menu.addAction(padaction);
+        connect(switchToPadAction, &QAction::triggered,[this](){activateWindow();});
+        menu.addAction(switchToPadAction);
     }
 }
 
