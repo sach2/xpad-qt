@@ -40,19 +40,9 @@ App::App(int argc, char* argv[]):QApplication(argc, argv),
     contextMenuCreator.Register(NewPad, std::bind(&App::newPadRequested, this));
 }
 
-void App::SavePadsThread()
-{
-    while (true)
-    {
-        for_each(padGroup->GetPads().begin(), padGroup->GetPads().end(),
-                 bind(&Pad::saveToFile, placeholders::_1));
-        this_thread::sleep_for(chrono::seconds(5));
-    }
-}
-
 void App::CreateTrayMenu()
 {
-    delete trayIcon->contextMenu();
+//    delete trayIcon->contextMenu();
     /*
     auto trayIconMenu = new QMenu();
 
@@ -96,11 +86,9 @@ void App::newPadRequested()
 void App::LoadPads()
 {
     padGroup->LoadPads();
-    padSaverThread = std::thread(&App::SavePadsThread, this);
 }
 
 void App::HideTray()
 {
     trayIcon->hide();
-    padSaverThread.detach();
 }

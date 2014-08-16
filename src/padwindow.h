@@ -17,7 +17,7 @@ class PadWindow;
 
 using namespace std;
 
-class PadWindow : public QMainWindow, public IMenuPlaceholderProvider
+class PadWindow : public QMainWindow
 {
     Q_OBJECT
     
@@ -25,19 +25,19 @@ public:
     Properties properties;
     explicit PadWindow(QWidget *parent = 0);
     ~PadWindow();
-    void SetPad(Pad*);
     void SetText(QString text);
     QString GetText();
     void SyncWithProperties();
-    void AddPlaceholderActions(MenuPlaceholders placeholder, QMenu& menu);
+    int padId;
 public slots:
     void closeEvent(QCloseEvent *);
     void propertiesWindowRequested();
     void preferencesWindowRequested();
     void showContextMenu(const QPoint& pos);
     bool eventFilter(QObject *object, QEvent *event);
+signals:
+    void deletePadRequested(int padid);
 private:
-    Pad*pad;
     QList<QAction*> actions;
     unique_ptr<PropertiesWindow> propertiesWindow;
     unique_ptr<PreferencesWindow> preferencesWindow;

@@ -7,12 +7,12 @@ class PadSerializer
 {
     QString infoFilename, contentFilename;
 public:
-    PadSerializer(QString infoFile);
-    Properties loadProperties() const;
-    void saveProperties(const Properties& properties) const;
-    QString loadContents() const;
-    void saveContents(QString contents) const;
-    void deletePad();
+    PadSerializer(QString infoFile, QString contentsFile="");
+    Properties LoadProperties() const;
+    void SaveProperties(const Properties& properties) const;
+    QString LoadContents() const;
+    void SaveContents(QString contents) const;
+    void DeletePad();
 };
 
 #endif // PADSERIALIZER_H

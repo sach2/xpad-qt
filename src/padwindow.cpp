@@ -22,16 +22,6 @@ PadWindow::PadWindow(QWidget *parent) :
     app->contextMenuCreator.Register(ShowAll, std::bind(&PadWindow::activateWindow, this));
     app->contextMenuCreator.Register(HideAll, std::bind(&PadWindow::hide, this));
     ui->textEdit->installEventFilter(this);
-    app->contextMenuCreator.RegisterPlaceholder(PadList, this);
-}
-void PadWindow::AddPlaceholderActions(MenuPlaceholders placeholder, QMenu& menu)
-{
-    if (placeholder == MenuPlaceholders::PadList)
-    {
-        auto switchToPadAction = new QAction(pad->getTitle(),NULL);
-        connect(switchToPadAction, &QAction::triggered,[this](){activateWindow();});
-        menu.addAction(switchToPadAction);
-    }
 }
 
 bool PadWindow::eventFilter(QObject *object, QEvent *event)
@@ -47,7 +37,7 @@ bool PadWindow::eventFilter(QObject *object, QEvent *event)
             app->contextMenuCreator.Register(Preferences, preferencesAction);
             auto closeAction = std::bind(&PadWindow::hide, this);
             app->contextMenuCreator.Register(ClosePad, closeAction);
-            auto deleteAction = [this](){emit pad->deletePadRequested(pad);};
+            auto deleteAction = [this](){emit deletePadRequested(padId);};
             app->contextMenuCreator.Register(DeletePad, deleteAction);
             app->contextMenuCreator.GetAction(Readonly)->setChecked(properties.readonly);
             auto readonlyAction = [this](){
@@ -170,10 +160,10 @@ void PadWindow::SyncWithProperties()
     ui->textEdit->setReadOnly(properties.readonly);
 }
 
-void PadWindow::SetPad(Pad * p)
-{
-    pad = p;
-}
+//void PadWindow::SetPad(Pad * p)
+//{
+//    pad = p;
+//}
 void PadWindow::SetText(QString text)
 {
     ui->textEdit->setText(text);
@@ -186,7 +176,7 @@ QString PadWindow::GetText()
 
 void PadWindow::closeEvent(QCloseEvent *e)
 {
-    pad->dataReceived(ui->textEdit->toPlainText());
+    //pad->dataReceived(ui->textEdit->toPlainText());
     e->ignore();
     hide();
 }

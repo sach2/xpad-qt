@@ -10,6 +10,7 @@
 #include <tuple>
 #include <functional>
 #include <QMenu>
+#include<QList>
 #include "IMenuPlaceholderProvider.h"
 
 class PadWindow;
@@ -38,7 +39,7 @@ class ContextMenuCreator
     std::map<MenuItems, QAction*> menuItemToActionMap;
     std::map<MenuPlaceholders, std::list<IMenuPlaceholderProvider*>> placeholderToActionMap;
     QPoint pos;
-    QMenu mainMenu;
+    QMenu mainMenu, contextMenu;
     void DisplayOnPad();
     void PrepareForTray();
 public:
@@ -50,6 +51,7 @@ public:
     void UnregisterPlaceholder(MenuPlaceholders, IMenuPlaceholderProvider* action);
     void Unregister(MenuItems menuItem);
     void Create(MenuContext context);
+    void SetNotesActions(const QList<QAction*>& actions);
     QAction* GetAction(MenuItems menuItem);
     QMenu* GetMenu()  {   return &mainMenu;    }
 };

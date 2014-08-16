@@ -10,23 +10,14 @@ using namespace std;
 class Pad : public QObject
 {
     Q_OBJECT
-    PadWindow padwindow;
-    QString windowBuffer, title;
-    PadSerializer serializer;
 public:
-    Pad(PadSerializer padSerializer);
+    QString windowBuffer, title;
+    Pad();
     ~Pad();
-    void show();
-    void loadFromFile();
-    void saveToFile();
-    void deletePad();
     QString getTitle();
 signals:
     // todo - check if this can be removed
-    void newPadRequested();
-    void deletePadRequested(Pad* pad);
-public slots:
-    void dataReceived(QString data);
+    void deletePadRequested(int padid);
 };
 
 #endif // PAD_H

@@ -20,9 +20,7 @@ class App : public QApplication
     unique_ptr<PadGroup> padGroup;
     QString iconPath;
     QString padDirectory;
-    std::thread padSaverThread;
 private:
-    void SavePadsThread();
 public:
     App(int argc, char* argv[]);
     void CreateTrayMenu();

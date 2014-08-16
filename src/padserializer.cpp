@@ -10,46 +10,40 @@
 #include<QDebug>
 using namespace std;
 
-PadSerializer::PadSerializer(QString infoFile)
+PadSerializer::PadSerializer(QString infoFile, QString contentFile)
 {
     infoFilename = infoFile;
-    // create new info file for new pads, with default properties
-    if (! QFile(infoFilename).exists())
+    if (contentFile == "")
     {
-        saveProperties(Properties());
-    }
-    // get content file name
-    QFile file(infoFilename);
-    if (file.open(QIODevice::ReadOnly))
-    {
-        QTextStream in(&file);
-        while (! in.atEnd())
+        // get content file name
+        QFile file(infoFilename);
+        if (file.open(QIODevice::ReadOnly))
         {
-            QString line = in.readLine();
-            if (line.startsWith("contents="))
+            QTextStream in(&file);
+            while (! in.atEnd())
             {
-                contentFilename = line.split("=")[1];
+                QString line = in.readLine();
+                if (line.startsWith("contents="))
+                {
+                    contentFile = line.split("=")[1];
+                }
             }
         }
     }
-    // new pad, create new contents file
-    if (contentFilename == "")
+    contentFilename = contentFile;
+    // create new info file for new pads, with default properties
+    if (! QFile(infoFilename).exists())
     {
-        QTime current_time = QTime::currentTime();
-        qsrand((uint)current_time.msec());
-        contentFilename = QString("%1/contents-%2")
-                .arg(QFileInfo(infoFilename).absoluteDir().path())
-                .arg(qrand() % 1000);
-
+        SaveProperties(Properties());
     }
     // write blank file, if not present
     if (! QFile(contentFilename).exists())
     {
-        saveContents(QString(""));
+        SaveContents(QString(""));
     }
 }
 
-Properties PadSerializer::loadProperties() const
+Properties PadSerializer::LoadProperties() const
 {
     Properties properties;
     QColor& backColor(properties.backColor);
@@ -90,7 +84,7 @@ Properties PadSerializer::loadProperties() const
     return properties;
 }
 
-void PadSerializer::saveProperties(const Properties &properties) const
+void PadSerializer::SaveProperties(const Properties &properties) const
 {
     QFile file(infoFilename);
     if (file.open(QIODevice::WriteOnly))
@@ -106,7 +100,7 @@ void PadSerializer::saveProperties(const Properties &properties) const
     }
 }
 
-QString PadSerializer::loadContents() const
+QString PadSerializer::LoadContents() const
 {
     QString contents;
     QFile file(contentFilename);
@@ -116,14 +110,16 @@ QString PadSerializer::loadContents() const
         while (! in.atEnd())
         {
             contents += in.readLine();
+            contents += "\n";
         }
     }
     return contents;
 }
 
 
-void PadSerializer::saveContents(QString contents) const
+void PadSerializer::SaveContents(QString contents) const
 {
+    SaveProperties(Properties());
     QFile file(contentFilename);
     if (file.open(QIODevice::WriteOnly))
     {
@@ -132,8 +128,9 @@ void PadSerializer::saveContents(QString contents) const
     }
 }
 
-void PadSerializer::deletePad()
+void PadSerializer::DeletePad()
 {
+
     if (QFile(infoFilename).exists())
         QFile(infoFilename).remove();
     if (QFile(contentFilename).exists())

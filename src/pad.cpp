@@ -5,57 +5,15 @@
 #include <string>
 #include <QFile>
 
-Pad::Pad(PadSerializer padSerializer)
-    :serializer(padSerializer)
+Pad::Pad()
 {
-    padwindow.SetPad(this);
-    padwindow.show();
-}
-
-// close clicked handler
-void Pad::dataReceived(QString data)
-{
-    windowBuffer = data;
-    saveToFile();
-}
-
-void Pad::show()
-{
-    padwindow.show();
-}
-
-void Pad::deletePad()
-{
-    padwindow.hide();
-    serializer.deletePad();
-}
-
-void Pad::loadFromFile()
-{
-    padwindow.properties = serializer.loadProperties();
-    padwindow.SetText(serializer.loadContents());
-    padwindow.SyncWithProperties();
 }
 
 QString Pad::getTitle()
 {
-    QString current_buffer = padwindow.GetText();
-    QStringList list = current_buffer.split('\n', QString::SkipEmptyParts);
-    return (list.size() > 0) ? list[0] : "";
-}
-
-void Pad::saveToFile()
-{
-    auto current_buffer = padwindow.GetText();
-    bool sameBuffer = current_buffer == windowBuffer;
-    bool sameProperties = serializer.loadProperties() == padwindow.properties;
-    if (sameBuffer && sameProperties)
-    {
-        return;
-    }
-    windowBuffer = current_buffer;
-    serializer.saveProperties(padwindow.properties);
-    serializer.saveContents(windowBuffer);
+//    QString current_buffer = padwindow.GetText();
+//    QStringList list = current_buffer.split('\n', QString::SkipEmptyParts);
+//    return (list.size() > 0) ? list[0] : "";
 }
 
 Pad::~Pad()

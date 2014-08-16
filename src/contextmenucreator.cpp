@@ -89,17 +89,18 @@ void ContextMenuCreator::Create(MenuContext context)
 }
 void ContextMenuCreator::DisplayOnPad()
 {
+    contextMenu.clear();
     auto padMenu = new QMenu("&Pad");
     padMenu->addAction(GetAction(NewPad));
     padMenu->addAction(GetAction(PadProperties));
     padMenu->addAction(GetAction(ClosePad));
     padMenu->addAction(GetAction(DeletePad));
-    mainMenu.addMenu(padMenu);
+    contextMenu.addMenu(padMenu);
 
     auto editMenu = new QMenu("&Edit");
     editMenu->addAction(GetAction(Readonly));
     editMenu->addAction(GetAction(Preferences));
-    mainMenu.addMenu(editMenu);
+    contextMenu.addMenu(editMenu);
 
     auto notesMenu = new QMenu("&Notes");
     notesMenu->addAction(GetAction(ShowAll));
@@ -118,9 +119,9 @@ void ContextMenuCreator::DisplayOnPad()
             });
         }
     });
-    mainMenu.addMenu(notesMenu);
+    contextMenu.addMenu(notesMenu);
 
-    mainMenu.exec(pos);
+    contextMenu.exec(pos);
 }
 
 void ContextMenuCreator::PrepareForTray()
@@ -150,4 +151,9 @@ void ContextMenuCreator::PrepareForTray()
 QAction* ContextMenuCreator::GetAction(MenuItems menuItem)
 {
     return menuItemToActionMap[menuItem];
+}
+
+void ContextMenuCreator::SetNotesActions(const QList<QAction *> &actions)
+{
+
 }
